@@ -27,6 +27,12 @@ class Books
     self.id == another_book.id
   end
 
-
+  def self.find (id)
+    Books.all.each do |book|
+      if book.id == id
+        return book
+      end
+    end
+  end
 
 end
