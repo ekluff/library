@@ -26,12 +26,16 @@ describe(Books) do
     end
   end
 
-  # describe('#in?') do
-  #   it('returns a boolean of whether book is in library') do
-  #     book = Book.new({title: 'Freakonomics'})
-  #     book.save
-  #     expect(book.in?).to(eq(true))
-  #   end
-  # end
+  describe('#out?') do
+    it('returns a boolean of whether book is in library') do
+      book = Books.new({title: 'Freakonomics'})
+      book.save
+      patron = Patrons.new({name: 'George Washington'})
+      patron.save
+      checkout = Checkouts.new({book_id: book.id, patron_id: patron.id})
+      checkout.save
+      expect(book.out?).to(eq(true))
+    end
+  end
 
 end

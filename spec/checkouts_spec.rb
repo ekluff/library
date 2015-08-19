@@ -1,3 +1,4 @@
+require 'pry'
 require('spec_helper')
 
 describe(Checkouts) do
@@ -11,28 +12,33 @@ describe(Checkouts) do
   describe('#save') do
     it('saves a new checkout into the database') do
       patron1 = Patrons.new({:name => 'Anton Chekov'}).save()
-      book1 = Books.new({:title => 'The Bishop'})
-      checkout = Checkouts.new({:patron_id => patron1, :book_id => book1 })
+      book1 = Books.new({:title => 'The Bishop'}).save()
+      checkout = Checkouts.new({:patron_id => patron1, :book_id => book1})
       checkout.save
       expect(Checkouts.all).to(eq([checkout]))
     end
   end
 
-  # describe('.find') do
-  #   it('finds a checkout based on id') do
-  #     checkout1 = Checkouts.new({title: 'Moonwalking with Einstein'})
-  #     checkout1.save
-  #     checkout2 = Checkouts.new({title: 'The World is Flat'})
-  #     checkout2.save
-  #     expect(Checkouts.find(checkout2.id)).to(eq(checkout2))
-  #   end
-  # end
-  #
+  describe('.find') do
+    it('finds a checkout based on id') do
+      checkout1 = Checkouts.new({:book_id => 2, :patron_id => 1})
+      checkout1.save
+      checkout2 = Checkouts.new({:book_id => 3, :patron_id => 4})
+      checkout2.save
+      expect(Checkouts.find(checkout2.id)).to(eq(checkout2))
+    end
+  end
+
   # describe('#in?') do
   #   it('returns a boolean of whether checkout is in library') do
-  #     checkout = Book.new({title: 'Freakonomics'})
+  #     book = Books.new({title: 'Freakonomics'})
+  #     book.save
+  #     patron = Patrons.new({name: 'Joe White'})
+  #     patron.save
+  #     checkout = Checkouts.new({book_id: book.id, patron_id: patron.id})
   #     checkout.save
-  #     expect(checkout.in?).to(eq(true))
+  #     binding.pry
+  #     expect(in?(book.id)).to(eq(true))
   #   end
   # end
 

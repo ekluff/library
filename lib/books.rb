@@ -1,3 +1,5 @@
+require 'pry'
+
 class Books
 
   attr_reader :title, :id
@@ -34,5 +36,29 @@ class Books
       end
     end
   end
-  
+
+  def out?
+    search_checkout = DB.exec("SELECT COUNT(1) FROM checkouts WHERE EXISTS (SELECT * FROM checkouts WHERE book_id = '#{@id}');").first.fetch('count').to_i
+    
+    if search_checkout == 1
+      true
+    else
+      false
+    end
+  end
+
+
+
+
+
+    # returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{@id}'")
+    # checkouts = []
+    # returned_checkouts.each do |checkout|
+    #   book_id = checkout.fetch('book_id').to_i
+    #   patron_id = checkout.fetch('patron_id').to_i
+    #   id = checkout.fetch('id').to_i
+    #   checkouts.push(Checkouts.new({book_id: book_id, patron_id: patron_id, id: id}))
+    # end
+    # checkouts
+
 end
