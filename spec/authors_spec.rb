@@ -10,7 +10,7 @@ describe(Authors) do
 
   describe('#save') do
     it('saves a new author into the database') do
-      author = Authors.new({title: 'To Kill a Mockingbird'})
+      author = Authors.new({name: 'Harper Lee'})
       author.save
       expect(Authors.all).to(eq([author]))
     end
@@ -18,9 +18,9 @@ describe(Authors) do
 
   describe('.find') do
     it('finds a author based on id') do
-      author1 = Authors.new({title: 'Moonwalking with Einstein'})
+      author1 = Authors.new({name: 'Joshue Foer'})
       author1.save
-      author2 = Authors.new({title: 'The World is Flat'})
+      author2 = Authors.new({name: 'Thomas L. Friedman'})
       author2.save
       expect(Authors.find(author2.id)).to(eq(author2))
     end
