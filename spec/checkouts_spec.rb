@@ -29,6 +29,16 @@ describe(Checkouts) do
     end
   end
 
+  describe('#due_date') do
+    it('returns a due date for a book') do
+      patron1 = Patrons.new({:name => 'John Francis Kennedy'}).save()
+      book1 = Books.new({:title => 'Death of a President'}).save()
+      checkout = Checkouts.new({:patron_id => patron1, :book_id => book1, :due_date => 'November 22, 1963'})
+      checkout.save
+      expect(checkout.due_date()).to(eq('1963-11-22'))
+    end
+  end
+
   # describe('#in?') do
   #   it('returns a boolean of whether checkout is in library') do
   #     book = Books.new({title: 'Freakonomics'})
