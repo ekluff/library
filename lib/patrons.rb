@@ -1,4 +1,4 @@
-class Authors
+class Patrons
 
   attr_reader :name, :id
 
@@ -8,29 +8,29 @@ class Authors
   end
 
   define_singleton_method(:all) do
-    returned_authors = DB.exec('SELECT * FROM authors;')
-    authors = []
-    returned_authors.each do |author|
-      name = author.fetch('name')
-      id = author.fetch('id').to_i
-      authors.push(Authors.new({:name => name, :id => id}))
+    returned_patrons = DB.exec('SELECT * FROM patrons;')
+    patrons = []
+    returned_patrons.each do |patron|
+      name = patron.fetch('name')
+      id = patron.fetch('id').to_i
+      patrons.push(Patrons.new({:name => name, :id => id}))
     end
-    authors
+    patrons
   end
 
   def save
-    result = DB.exec("INSERT INTO authors (name) VALUES ('#{@name}') RETURNING id;")
+    result = DB.exec("INSERT INTO patrons (name) VALUES ('#{@name}') RETURNING id;")
     @id = result.first.fetch("id").to_i
   end
 
-  def ==(another_author)
-    self.id == another_author.id
+  def ==(another_patron)
+    self.id == another_patron.id
   end
 
   def self.find (id)
-    Authors.all.each do |author|
-      if author.id == id
-        return author
+    Patrons.all.each do |patron|
+      if patron.id == id
+        return patron
       end
     end
   end
