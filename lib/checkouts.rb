@@ -12,10 +12,11 @@ class Checkouts
     returned_checkouts = DB.exec('SELECT * FROM checkouts;')
     checkouts = []
     returned_checkouts.each do |checkout|
-      book_id = checkout.fetch('book_id')
-      patron_id = checkout.fetch('patron_id')
+      book_id = checkout.fetch('book_id').to_i
+      patron_id = checkout.fetch('patron_id').to_i
       id = checkout.fetch('id').to_i
-      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id}))
+      due_date = checkout.fetch('due_date')
+      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date}))
     end
     checkouts
   end
@@ -36,6 +37,25 @@ class Checkouts
       end
     end
   end
+
+  def self.due_date(book, patron)
+    returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{book}' AND patron_id = '#{patron}';")
+
+    checkouts = []
+    returned_checkouts.each do |checkout|
+      book_id = checkout.fetch('book_id').to_i
+      patron_id = checkout.fetch('patron_id').to_i
+      id = checkout.fetch('id').to_i
+      due_date = checkout.fetch('due_date')
+      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date}))
+    end
+    checkouts
+
+  end
+
+  # def due_date (book)
+  #   due_date = DB.exec("SELECT due_date FROM checkouts WHERE id = '#{self.id}' AND book_id = '#{book}';")
+  # end
 
   # def self.in? (search_id)
   #   returned_books = DB.exec("SELECT book_id FROM checkouts WHERE book_id = '#{search_id}';").to_i

@@ -39,17 +39,13 @@ class Books
 
   def out?
     search_checkout = DB.exec("SELECT COUNT(1) FROM checkouts WHERE EXISTS (SELECT * FROM checkouts WHERE book_id = '#{@id}');").first.fetch('count').to_i
-    
+
     if search_checkout == 1
       true
     else
       false
     end
   end
-
-
-
-
 
     # returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{@id}'")
     # checkouts = []
