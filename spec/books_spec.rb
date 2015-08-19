@@ -26,4 +26,12 @@ describe(Books) do
     end
   end
 
+  # describe('#in?') do
+  #   it('returns a boolean of whether book is in library') do
+  #     book = Book.new({title: 'Freakonomics'})
+  #     book.save
+  #     expect(book.in?).to(eq(true))
+  #   end
+  # end
+
 end

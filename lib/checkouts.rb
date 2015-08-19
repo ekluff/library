@@ -1,4 +1,4 @@
-class Books
+class Checkouts
 
   attr_reader :title, :id
 
@@ -34,5 +34,5 @@ class Books
       end
     end
   end
-  
+
 end
