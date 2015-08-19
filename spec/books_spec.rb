@@ -19,11 +19,11 @@ describe(Books) do
   describe('.find') do
     it('finds a book based on id') do
       book1 = Books.new({title: 'Moonwalking with Einstein'})
-      book.save
+      book1.save
       book2 = Books.new({title: 'The World is Flat'})
-      book.save
+      book2.save
       expect(Books.find(book2.id)).to(eq(book2))
     end
   end
-  
+
 end
