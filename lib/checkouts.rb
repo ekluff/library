@@ -1,3 +1,5 @@
+require 'pry'
+
  class Checkouts
 
   attr_reader :book_id, :patron_id, :id, :active, :due_date
@@ -62,6 +64,23 @@
       checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date, :active => active}))
     end
     checkouts
+  end
+
+  def self.overdue_books
+    returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE active = 'true'")
+    overdue_books = []
+    returned_checkouts.each do |checkout|
+      book_id = checkout.fetch('book_id').to_i
+      patron_id = checkout.fetch('patron_id').to_i
+      id = checkout.fetch('id').to_i
+      due_date = Time.parse(checkout.fetch('due_date'))
+      binding.pry
+      book_title = Books.find(book_id)
+      if due_date < Time.now
+        overdue_books.push(Books.new(title: book_title, id: book_id, due_date: due_date))
+      end
+    end
+    overdue_books
   end
 
   # def self.due_date(book, patron)

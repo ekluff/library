@@ -1,7 +1,7 @@
   <div class="header col-md-12">
 
     <div class="col-md-3">
-      <h1>PATRONS</h1>
+      <h1>Welcome, <%= @patron.name %>!</h1>
     </div>
 
     <div class="col-md-3">
@@ -21,31 +21,33 @@
   </div>
 
   <div class="col-md-12">
-    <div class="results col-md-6">
+    <h4 class="text-align-center">Here's some books you can read.</h4>
+      <div class="results col-md-6">
 
-      <table class="table table-hover">
-        <tr id="first-row">
-          <th width="60%">
-            Book Title
-          </th>
-          <th width="20%"></th>
-        </tr>
-
-        <% @display_books.each do |book| %>
-          <tr>
-            <% unless book.out? %>
-              <td width="60%">
-                <%= book.title %>
-              </td>
-              <td width="20%">
-                <form class="" action="/patron/checkout/<%= book.id %>" method="post">
-                  <button name="button" type="submit">Checkout</button>
-                </form>
-              </td>
-            <% end %>
+        <table class="table table-hover">
+          <tr id="first-row">
+            <th width="60%">
+              Book Title
+            </th>
+            <th width="20%"></th>
           </tr>
-        <% end %>
-      </table>
+
+          <% @display_books.each do |book| %>
+            <tr>
+              <% unless book.out? %>
+                <td width="60%">
+                  <%= book.title %>
+                </td>
+                <td width="20%">
+                  <form class="" action="/patron/checkout/<%= book.id %>" method="post">
+                    <input type="hidden" name="patron_id" value="<%= @patron.id %>">
+                    <button name="button" type="submit">Checkout</button>
+                  </form>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </table>
 
     </div>
 
@@ -71,6 +73,7 @@
               </td>
               <td width="10%">
                 <form class="" action="/patron/checkin/<%= book.id %>" method="post">
+                  <input type="hidden" name="patron_id" value="<%= @patron.id %>">
                   <button name="button" type="submit">Checkin</button>
                 </form>
               </td>
@@ -79,4 +82,5 @@
         </table>
 
     </div>
+    <a href="/">home</a>
   </div>

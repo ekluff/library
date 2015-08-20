@@ -1,1 +1,93 @@
-<h1>LIBRARIANS</h1>
+<!-- <div class="header col-md-12"> -->
+
+  <!-- <div class="col-md-3"> -->
+    <h1>Welcome, <%= @librarian.name %>!</h1>
+  <!-- </div> -->
+
+  <!-- <div class="col-md-3"> -->
+    <form class="search" action="/librarian/search/book" method="get">
+      <input class="input-xlarge" type="text" name="search_book" placeholder="Search for a book title" value="">
+      <button class="btn btn-sm btn-primary" name="button" type="submit">Go</button>
+    </form>
+  <!-- </div> -->
+
+  <!-- <div class="col-md-3"> -->
+    <form class="search" action="/librarian/search/author" method="get">
+      <input class="input-xlarge" type="text" name="author_search" placeholder="Search for an author name" value="">
+      <button class="btn btn-sm btn-primary" name="button" type="submit">Go</button>
+    </form>
+  <!-- </div> -->
+
+<!-- </div> -->
+
+<!-- <div class="col-md-12"> -->
+  <h4 class="text-align-center">Here's some books you can manage.</h4>
+    <!-- <div class="results col-md-6"> -->
+
+      <table class="table table-hover">
+        <tr id="first-row">
+          <th width="60%">
+            Book Title
+          </th>
+          <th width="20%">
+            Out?
+          </th>
+          <th width="20%"></th>
+        </tr>
+
+        <% @display_books.each do |book| %>
+          <tr>
+            <td width="60%">
+              <%= book.title %>
+            </td>
+            <td width="20%">
+              <%= book.out? %>
+            </td>
+            <td width="20%">
+              <form class="" action="/librarian/delete/<%= book.id %>" method="post">
+                <button name="button" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <form class="" action="/book/new" method="post">
+            <td width="80%">
+              <input type="hidden" name="librarian" value="<%= @librarian %>">
+              <input type="text" name="title" placeholder="book title" value="">
+            </td>
+            <td width="20%">
+              <button class="btn btn-sm btn-primary" name="button" type="submit">+</button>
+            </td>
+          </form>
+        </tr>
+      </table>
+
+  <!-- </div> -->
+
+  <!-- <div class="account-tools col-md-6"> -->
+    <h4 class="text-align-center">Overdue books</h4>
+
+      <table class="table table-hover">
+        <tr id="first-row">
+          <th width="60%">
+            Book Title
+          </th>
+          <th width="10%">Due Date</th>
+          <th width="10%"></th>
+        </tr>
+        <% @overdue_books.each do |book| %>
+          <tr>
+            <td width="60%">
+              <%= Books.find(book.id).first.title %>
+            </td>
+            <td>
+              <%= book.due_date %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+
+  <!-- </div> -->
+  <a href="/">home</a>
+<!-- </div> -->

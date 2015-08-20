@@ -20,6 +20,22 @@
 <% end %>
 </ul>
 
+<form action="/librarian/new" method="post">
+  <label for="name">Sign Up to be a Librarian</label>
+  <input type="text" name="name" placeholder="Your name here">
+  <button name="David" type="submit" class="btn btn-sm btn-primary">Go</button>
+</form>
+
+<ul>
+  <% @librarians.each do |librarian| %>
+  <li>
+    <a href="/librarian/<%= librarian.id %>">
+      <%= librarian.name %>
+    </a>
+  </li>
+
+<% end %>
+</ul>
 
 
 <a href="/patron">Patrons Click Here</a>

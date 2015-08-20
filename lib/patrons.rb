@@ -24,11 +24,13 @@ class Patrons
   end
 
   def self.find (id)
+    found_patron = nil
     Patrons.all.each do |patron|
       if patron.id == id
-        return patron
+        found_patron = patron
       end
     end
+    found_patron
   end
 
   def check_in (book_id)
