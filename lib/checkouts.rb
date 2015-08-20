@@ -1,4 +1,4 @@
-class Checkouts
+ class Checkouts
 
   attr_reader :book_id, :patron_id, :id
 
