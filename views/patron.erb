@@ -1,0 +1,82 @@
+  <div class="header col-md-12">
+
+    <div class="col-md-3">
+      <h1>PATRONS</h1>
+    </div>
+
+    <div class="col-md-3">
+      <form class="search" action="/patron/search/book" method="get">
+        <input class="input-xlarge" type="text" name="search_book" placeholder="Search for a book title" value="">
+        <button class="btn btn-sm btn-primary" name="button" type="submit">Go</button>
+      </form>
+    </div>
+
+    <div class="col-md-3">
+      <form class="search" action="/patron/search/author" method="get">
+        <input class="input-xlarge" type="text" name="author_search" placeholder="Search for an author name" value="">
+        <button class="btn btn-sm btn-primary" name="button" type="submit">Go</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="col-md-12">
+    <div class="results col-md-6">
+
+      <table class="table table-hover">
+        <tr id="first-row">
+          <th width="60%">
+            Book Title
+          </th>
+          <th width="20%"></th>
+        </tr>
+
+        <% @display_books.each do |book| %>
+          <tr>
+            <% unless book.out? %>
+              <td width="60%">
+                <%= book.title %>
+              </td>
+              <td width="20%">
+                <form class="" action="/patron/checkout/<%= book.id %>" method="post">
+                  <button name="button" type="submit">Checkout</button>
+                </form>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+
+    </div>
+
+    <div class="account-tools col-md-6">
+      <h4 class="text-align-center">My checkouts</h4>
+
+        <table class="table table-hover">
+          <tr id="first-row">
+            <th width="60%">
+              Book Title
+            </th>
+            <th width="10%">Due Date</th>
+            <th width="10%"></th>
+          </tr>
+
+          <% @checkout_books.each do |book| %>
+            <tr>
+              <td width="60%">
+                <%= book.title %>
+              </td>
+              <td width=10%>
+                <%= book.due_date %>
+              </td>
+              <td width="10%">
+                <form class="" action="/patron/checkin/<%= book.id %>" method="post">
+                  <button name="button" type="submit">Checkin</button>
+                </form>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+
+    </div>
+  </div>

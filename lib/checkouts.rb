@@ -1,11 +1,13 @@
  class Checkouts
 
-  attr_reader :book_id, :patron_id, :id
+  attr_reader :book_id, :patron_id, :id, :active, :due_date
 
   define_method(:initialize) do |attributes|
     @book_id = attributes.fetch(:book_id)
     @patron_id = attributes.fetch(:patron_id)
     @id = attributes.fetch(:id, nil)
+    @due_date = Time.now+1209600
+    @active = true
   end
 
   define_singleton_method(:all) do
@@ -15,14 +17,19 @@
       book_id = checkout.fetch('book_id').to_i
       patron_id = checkout.fetch('patron_id').to_i
       id = checkout.fetch('id').to_i
-      due_date = checkout.fetch('due_date')
-      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date}))
+      due_date = Time.parse(checkout.fetch('due_date'))
+      active = if checkout.fetch('active') == 'true'
+          true
+        else
+          false
+        end
+      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date, :active => active}))
     end
     checkouts
   end
 
   def save
-    result = DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES ('#{@patron_id}', '#{@book_id}') RETURNING id;")
+    result = DB.exec("INSERT INTO checkouts (patron_id, book_id, active, due_date) VALUES ('#{@patron_id}', '#{@book_id}', '#{@active}', '#{@due_date}') RETURNING id;")
     @id = result.first.fetch("id").to_i
   end
 
@@ -38,20 +45,39 @@
     end
   end
 
-  def self.due_date(book, patron)
-    returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{book}' AND patron_id = '#{patron}';")
+  def checkouts
+    returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE patron_id = '#{patron_id}';")
 
     checkouts = []
     returned_checkouts.each do |checkout|
       book_id = checkout.fetch('book_id').to_i
       patron_id = checkout.fetch('patron_id').to_i
       id = checkout.fetch('id').to_i
-      due_date = checkout.fetch('due_date')
-      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date}))
+      due_date = Time.parse(checkout.fetch('due_date'))
+      active = if checkout.fetch('active') == 'true'
+          true
+        else
+          false
+        end
+      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date, :active => active}))
     end
     checkouts
-
   end
+
+  # def self.due_date(book, patron)
+  #   returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{book}' AND patron_id = '#{patron}';")
+  #
+  #   checkouts = []
+  #   returned_checkouts.each do |checkout|
+  #     book_id = checkout.fetch('book_id').to_i
+  #     patron_id = checkout.fetch('patron_id').to_i
+  #     id = checkout.fetch('id').to_i
+  #     due_date = checkout.fetch('due_date')
+  #     checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date}))
+  #   end
+  #   checkouts
+  #
+  # end
 
   # def due_date (book)
   #   due_date = DB.exec("SELECT due_date FROM checkouts WHERE id = '#{self.id}' AND book_id = '#{book}';")

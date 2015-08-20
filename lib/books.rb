@@ -38,7 +38,7 @@ class Books
   end
 
   def out?
-    search_checkout = DB.exec("SELECT COUNT(1) FROM checkouts WHERE EXISTS (SELECT * FROM checkouts WHERE book_id = '#{@id}');").first.fetch('count').to_i
+    search_checkout = DB.exec("SELECT COUNT(1) FROM checkouts WHERE EXISTS (SELECT * FROM checkouts WHERE book_id = '#{@id}' AND active = 'true');").first.fetch('count').to_i
 
     if search_checkout == 1
       true
@@ -46,6 +46,26 @@ class Books
       false
     end
   end
+
+  def checkouts
+    returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{@id}';")
+
+    checkouts = []
+    returned_checkouts.each do |checkout|
+      book_id = checkout.fetch('book_id').to_i
+      patron_id = checkout.fetch('patron_id').to_i
+      id = checkout.fetch('id').to_i
+      due_date = Time.parse(checkout.fetch('due_date'))
+      active = if checkout.fetch('active') == 'true'
+          true
+        else
+          false
+        end
+      checkouts.push(Checkouts.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date, :active => active}))
+    end
+    checkouts
+  end
+
 
     # returned_checkouts = DB.exec("SELECT * FROM checkouts WHERE book_id = '#{@id}'")
     # checkouts = []
