@@ -9,6 +9,18 @@
   <button name="David" type="submit" class="btn btn-sm btn-primary">Go</button>
 </form>
 
+<ul>
+  <% @patrons.each do |patron| %>
+  <li>
+    <a href="/patron/<%= patron.id %>">
+      <%= patron.name %>
+    </a>
+  </li>
+
+<% end %>
+</ul>
+
+
 
 <a href="/patron">Patrons Click Here</a>
 <br>
